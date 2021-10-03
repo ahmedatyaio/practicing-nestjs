@@ -9,14 +9,18 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateTaskDto } from './dto/create-task-dto';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Tasks')
 @Controller('tasks')
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
