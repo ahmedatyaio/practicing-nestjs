@@ -14,7 +14,6 @@ import { AuthModule } from './auth/auth.module';
       username: 'postgres',
       password: 'postgres',
       autoLoadEntities: true,
-      logging: true,
       synchronize: true,
     }),
     AuthModule,

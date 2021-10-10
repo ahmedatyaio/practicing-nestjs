@@ -1,5 +1,7 @@
+import { TransformInterceptor } from './transform.interceptor';
 import {
   BadRequestException,
+  Logger,
   ValidationError,
   ValidationPipe,
 } from '@nestjs/common';
@@ -9,6 +11,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const logger = new Logger();
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
@@ -18,7 +21,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('documentation', app, document);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -36,6 +39,9 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalInterceptors(new TransformInterceptor());
+
   await app.listen(3000);
+  logger.log('Application listening on port 3000');
 }
 bootstrap();
